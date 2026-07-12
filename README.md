@@ -1,6 +1,6 @@
 # Diagram Editor
 
-A browser-based interactive diagram editor for creating node graphs with an infinite canvas, smooth pan & zoom, and a rich set of customization options. Built with **React**, **React Flow (xyflow)**, **TypeScript**, and **Tailwind CSS**.
+A browser-based interactive diagram editor for creating node graphs with an infinite canvas, smooth pan & zoom, and a rich set of customization options. Built with **React**, **React Flow (xyflow)**, **TypeScript**, and **Tailwind CSS**. Parecido al de MITRE pero mejor.
 
 <p align="center">
   <img src="public/orion-logo-white.svg" alt="Orion" width="200" />
@@ -236,7 +236,7 @@ Exported diagrams use this JSON structure:
 | Icons | lucide-react |
 | State | Zustand 4.x |
 | Persistence | localStorage |
-| Fonts | Inter + IBM Plex Mono |
+| Fonts | Inter |
 
 ---
 
