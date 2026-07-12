@@ -1,0 +1,136 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Hide handles when grid is toggled off (screenshot mode) */
+.handles-hidden .react-flow__handle {
+  opacity: 0 !important;
+  pointer-events: none;
+}
+
+/* React Flow dark mode overrides */
+html.dark .react-flow__background {
+  background-color: #141414;
+}
+
+html.dark .react-flow__node {
+  filter: brightness(0.9);
+}
+
+html.dark .react-flow__controls-button {
+  background-color: #374151;
+  color: #e5e7eb;
+  border-color: #4b5563;
+  fill: #e5e7eb;
+}
+
+html.dark .react-flow__controls-button:hover {
+  background-color: #4b5563;
+}
+
+html.dark .react-flow__minimap {
+  background-color: #141414;
+  border-color: #333333;
+}
+
+html.dark .react-flow__attribution {
+  display: none;
+}
+
+.react-flow__attribution {
+  display: none;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #94a3b8;
+  border-radius: 3px;
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+  background-color: #64748b;
+}
+
+/* Animated selection outline — breathing orange dashes */
+@keyframes outline-breathe {
+  0%, 100% { outline-offset: 2px; }
+  50% { outline-offset: 5px; }
+}
+
+/* Animated edge dash */
+@keyframes dash-motion {
+  from {
+    stroke-dashoffset: 24;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Toast animation */
+@keyframes toast-in {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.toast-enter {
+  animation: toast-in 0.3s ease-out;
+}
+
+@layer components {
+  .toolbar-btn {
+    @apply flex items-center px-2 py-1.5 rounded-md text-sm font-medium
+      text-gray-600 dark:text-gray-300
+      hover:bg-gray-100 dark:hover:bg-gray-800
+      disabled:opacity-30 disabled:cursor-not-allowed
+      transition-colors duration-150;
+  }
+
+  .btn-primary {
+    @apply px-4 py-2 text-sm font-medium rounded-lg
+      bg-blue-600 hover:bg-blue-700
+      text-white
+      transition-colors duration-150
+      disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply px-4 py-2 text-sm font-medium rounded-lg
+      bg-gray-100 dark:bg-gray-700
+      hover:bg-gray-200 dark:hover:bg-gray-600
+      text-gray-700 dark:text-gray-200
+      border border-gray-300 dark:border-gray-600
+      transition-colors duration-150;
+  }
+
+  .btn-danger {
+    @apply px-4 py-2 text-sm font-medium rounded-lg
+      bg-red-600 hover:bg-red-700
+      text-white
+      transition-colors duration-150;
+  }
+
+  .prop-input {
+    @apply w-full px-2 py-1.5 text-sm rounded-md
+      bg-white dark:bg-gray-700
+      border border-gray-300 dark:border-gray-600
+      text-gray-800 dark:text-gray-200
+      focus:border-blue-500 focus:ring-1 focus:ring-blue-500
+      outline-none transition-colors;
+  }
+}
