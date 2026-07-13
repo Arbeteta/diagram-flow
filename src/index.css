@@ -10,7 +10,7 @@
 
 /* React Flow dark mode overrides */
 html.dark .react-flow__background {
-  background-color: #141414;
+  background-color: #030712;
 }
 
 html.dark .react-flow__node {
@@ -19,9 +19,9 @@ html.dark .react-flow__node {
 
 html.dark .react-flow__controls-button {
   background-color: #374151;
-  color: #e5e7eb;
+  color: #d1d5db;
   border-color: #4b5563;
-  fill: #e5e7eb;
+  fill: #d1d5db;
 }
 
 html.dark .react-flow__controls-button:hover {
@@ -29,8 +29,8 @@ html.dark .react-flow__controls-button:hover {
 }
 
 html.dark .react-flow__minimap {
-  background-color: #141414;
-  border-color: #333333;
+  background-color: #111827;
+  border-color: #374151;
 }
 
 html.dark .react-flow__attribution {

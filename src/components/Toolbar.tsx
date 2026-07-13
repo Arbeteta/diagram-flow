@@ -14,10 +14,13 @@ import {
   Grid3X3,
   AlignLeft,
   AlignCenter,
+  Image,
 } from "lucide-react";
+import { toPng } from "html-to-image";
 import { useDiagramStore } from "../store/diagramStore";
 import { NODE_TYPE_DEFINITIONS } from "../utils/defaults";
 import { useReactFlow } from "@xyflow/react";
+import { ICONS } from "../utils/icons";
 
 export function Toolbar() {
   const undo = useDiagramStore((s) => s.undo);
@@ -124,19 +127,37 @@ export function Toolbar() {
     }
   }, [selectedNodeId, selectedEdgeId, deleteSelected]);
 
+  const handleExportPng = useCallback(() => {
+    const viewport = document.querySelector(".react-flow__viewport") as HTMLElement;
+    if (!viewport) return;
+    toPng(viewport, {
+      backgroundColor: darkMode ? "#030712" : "#ffffff",
+      pixelRatio: 2,
+    }).then((dataUrl) => {
+      const stamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
+      const link = document.createElement("a");
+      link.download = `diagram-${stamp}.png`;
+      link.href = dataUrl;
+      link.click();
+      setToast("PNG exported");
+    }).catch(() => {
+      setToast("PNG export failed");
+    });
+  }, [darkMode, setToast]);
+
   return (
     <>
-      <header className="h-12 bg-white dark:bg-[#141414] border-b border-gray-200 dark:border-gray-700 flex items-center gap-1 px-2 shrink-0 z-10">
+      <header className="h-12 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 flex items-center gap-1 px-2 shrink-0 z-10">
         {/* Left: Logo */}
         <img
           src="/orion-logo-white.svg"
           alt="Orion"
-          className="h-7 mr-2 hidden dark:sm:inline"
+          className="h-4 mr-2 hidden dark:sm:inline"
         />
         <img
           src="/orion-logo-white.svg"
           alt="Orion"
-          className="h-7 mr-2 hidden sm:inline dark:hidden"
+          className="h-4 mr-2 hidden sm:inline dark:hidden"
           style={{ filter: "invert(1) brightness(0)" }}
         />
         <div className="w-px h-6 bg-gray-200 dark:bg-gray-700 mr-1 hidden sm:block" />
@@ -179,11 +200,8 @@ export function Toolbar() {
                   onClick={() => handleAddNode(def.type)}
                   className="w-full flex items-center gap-3 px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                 >
-                  <span
-                    className="w-6 h-6 flex items-center justify-center rounded text-white text-xs"
-                    style={{ backgroundColor: def.defaultColor }}
-                  >
-                    {def.icon}
+                  <span className="w-6 h-6 flex items-center justify-center">
+                    {ICONS[def.type]?.(def.defaultColor) ?? def.icon}
                   </span>
                   {def.label}
                 </button>
@@ -254,6 +272,11 @@ export function Toolbar() {
           className={`toolbar-btn ${showGrid ? "text-blue-600 dark:text-blue-400" : ""}`}
         >
           <Grid3X3 size={18} />
+        </button>
+
+        {/* PNG Export */}
+        <button onClick={handleExportPng} title="Export PNG" className="toolbar-btn">
+          <Image size={18} />
         </button>
 
         {/* Text Align */}

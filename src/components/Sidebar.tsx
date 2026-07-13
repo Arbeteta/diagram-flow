@@ -1,6 +1,8 @@
 import { useCallback, type DragEvent } from "react";
 import { NODE_TYPE_DEFINITIONS, COLOR_PALETTES } from "../utils/defaults";
 import { useDiagramStore } from "../store/diagramStore";
+import { ColorPicker } from "./ColorPicker";
+import { ICONS } from "../utils/icons";
 
 export function Sidebar() {
   const activePalette = useDiagramStore((s) => s.activePalette);
@@ -20,7 +22,7 @@ export function Sidebar() {
 
   return (
     <aside className="w-48 bg-gray-50 dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex flex-col overflow-y-auto shrink-0">
-      <div className="p-3 border-b border-gray-200 dark:border-gray-700">
+      <div className="p-3">
         <h2 className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
           Nodes
         </h2>
@@ -31,18 +33,15 @@ export function Sidebar() {
             key={def.type}
             draggable
             onDragStart={(e) => onDragStart(e, def.type)}
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg cursor-grab active:cursor-grabbing
+            className="flex items-center gap-2 px-3 py-2 rounded-lg cursor-grab active:cursor-grabbing
               bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600
-              hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-md
+              hover:border-gray-300 dark:hover:border-gray-500 hover:shadow-md
               transition-all duration-150 select-none"
           >
-            <span
-              className="w-8 h-8 flex items-center justify-center rounded-md text-white text-sm font-bold"
-              style={{ backgroundColor: def.defaultColor }}
-            >
-              {def.icon}
+            <span className="w-6 h-6 shrink-0 flex items-center justify-center">
+              {ICONS[def.type]?.(def.defaultColor) ?? def.icon}
             </span>
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
+            <span className="text-xs font-medium text-gray-700 dark:text-gray-200 truncate">
               {def.label}
             </span>
           </div>
@@ -92,16 +91,18 @@ export function Sidebar() {
                 ["bodyColor", "Body"],
                 ["edgeColor", "Edge"],
                 ["borderColor", "Border"],
+                ["textColor", "Text"],
                 ["descriptionColor", "Desc Text"],
                 ["booleanHeaderColor", "AND/OR"],
               ] as [keyof typeof customPalette, string][]).map(([key, label]) => (
                 <label key={key} className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="color"
-                    value={customPalette[key] as string}
-                    onChange={(e) => setCustomPaletteColor(key, e.target.value)}
-                    className="w-6 h-6 rounded cursor-pointer border border-gray-300 dark:border-gray-600 p-0"
-                  />
+                  <div className="w-6 h-6">
+                    <ColorPicker
+                      circle
+                      value={customPalette[key] as string}
+                      onChange={(v) => setCustomPaletteColor(key, v)}
+                    />
+                  </div>
                   <span className="text-xs text-gray-500 dark:text-gray-400 truncate">
                     {label}
                   </span>
@@ -118,17 +119,18 @@ export function Sidebar() {
           <h2 className="text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-2">
             Arrows
           </h2>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="color"
-              value={globalArrowColor}
-              onChange={(e) => setGlobalArrowColor(e.target.value)}
-              className="w-8 h-8 rounded cursor-pointer border border-gray-300 dark:border-gray-600"
-            />
-            <span className="text-xs text-gray-500 dark:text-gray-400 truncate">
+          <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500 transition-all duration-150">
+            <div className="w-5 h-5 shrink-0">
+              <ColorPicker
+                circle
+                value={globalArrowColor}
+                onChange={(v) => setGlobalArrowColor(v)}
+              />
+            </div>
+            <span className="text-xs font-medium text-gray-700 dark:text-gray-200 truncate font-mono">
               {globalArrowColor}
             </span>
-          </label>
+          </div>
         </div>
       </div>
 

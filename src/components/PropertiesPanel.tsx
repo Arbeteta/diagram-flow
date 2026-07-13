@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useDiagramStore } from "../store/diagramStore";
+import { ColorPicker } from "./ColorPicker";
 import type { NodeData, EdgeData } from "../types";
 
 export function PropertiesPanel() {
@@ -17,14 +18,7 @@ export function PropertiesPanel() {
   const selectedEdge = edges.find((e) => e.id === selectedEdgeId);
 
   if (!selectedNode && !selectedEdge) {
-    return (
-      <aside className="w-64 bg-gray-50 dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 flex flex-col shrink-0">
-        <div className="p-4 text-center text-gray-400 dark:text-gray-500 text-sm mt-8">
-          <p>Select a node or edge</p>
-          <p className="mt-1">to edit its properties</p>
-        </div>
-      </aside>
-    );
+    return null;
   }
 
   return (
@@ -83,23 +77,11 @@ function NodeProperties({ data, onUpdate, onPushHistory, onDelete }: NodePropert
     [localData, onUpdate, onPushHistory]
   );
 
-  const isMultiNode = localData.nodeType === "multinode";
   const isComplex = localData.nodeType === "complex";
 
   return (
     <>
-      {isMultiNode && (
-        <PropRow label="Category">
-          <input
-            type="text"
-            value={localData.category ?? ""}
-            onChange={(e) => handleChange("category", e.target.value)}
-            className="prop-input"
-            placeholder="Category context..."
-          />
-        </PropRow>
-      )}
-      <PropRow label={isMultiNode ? "Title" : "Label"}>
+      <PropRow label="Label">
         <input
           type="text"
           value={localData.label}
@@ -107,7 +89,7 @@ function NodeProperties({ data, onUpdate, onPushHistory, onDelete }: NodePropert
           className="prop-input"
         />
       </PropRow>
-      {!isMultiNode && !isComplex && (
+      {!isComplex && (
         <PropRow label="Category">
           <input
             type="text"
@@ -160,27 +142,21 @@ function NodeProperties({ data, onUpdate, onPushHistory, onDelete }: NodePropert
       </PropRow>
       <hr className="border-gray-200 dark:border-gray-700" />
       <PropRow label="Header Color">
-        <input
-          type="color"
+        <ColorPicker
           value={localData.headerColor ?? localData.color}
-          onChange={(e) => handleChange("headerColor", e.target.value)}
-          className="w-full h-8 rounded cursor-pointer border border-gray-300 dark:border-gray-600"
+          onChange={(v) => handleChange("headerColor", v)}
         />
       </PropRow>
       <PropRow label="Body Color">
-        <input
-          type="color"
+        <ColorPicker
           value={localData.color}
-          onChange={(e) => handleChange("color", e.target.value)}
-          className="w-full h-8 rounded cursor-pointer border border-gray-300 dark:border-gray-600"
+          onChange={(v) => handleChange("color", v)}
         />
       </PropRow>
       <PropRow label="Border Color">
-        <input
-          type="color"
+        <ColorPicker
           value={localData.borderColor}
-          onChange={(e) => handleChange("borderColor", e.target.value)}
-          className="w-full h-8 rounded cursor-pointer border border-gray-300 dark:border-gray-600"
+          onChange={(v) => handleChange("borderColor", v)}
         />
       </PropRow>
       <PropRow label="Border Width">
@@ -270,11 +246,9 @@ function EdgeProperties({ data, onUpdate, onPushHistory, onDelete }: EdgePropert
         />
       </PropRow>
       <PropRow label="Color">
-        <input
-          type="color"
+        <ColorPicker
           value={localData.color}
-          onChange={(e) => handleChange("color", e.target.value)}
-          className="w-full h-8 rounded cursor-pointer border border-gray-300 dark:border-gray-600"
+          onChange={(v) => handleChange("color", v)}
         />
       </PropRow>
       <PropRow label="Width">

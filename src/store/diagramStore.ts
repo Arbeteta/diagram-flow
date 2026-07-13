@@ -155,6 +155,7 @@ export const useDiagramStore = create<DiagramState>((set, get) => {
       if (palette) {
         nodeData.color = palette.bodyColor;
         nodeData.headerColor = type === "and" || type === "or" ? palette.booleanHeaderColor : palette.headerColor;
+        nodeData.textColor = palette.textColor;
         nodeData.descriptionColor = palette.descriptionColor;
         nodeData.borderColor = palette.borderColor;
       }
@@ -425,6 +426,7 @@ export const useDiagramStore = create<DiagramState>((set, get) => {
               ...node.data,
               color: palette.bodyColor,
               headerColor: isBool ? palette.booleanHeaderColor : palette.headerColor,
+              textColor: palette.textColor,
               descriptionColor: palette.descriptionColor,
               borderColor: palette.borderColor,
             } as NodeData,

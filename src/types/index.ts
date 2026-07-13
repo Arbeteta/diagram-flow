@@ -8,6 +8,7 @@ export interface NodeData {
   description?: string;
   color: string;
   headerColor?: string;
+  textColor?: string;
   descriptionColor?: string;
   fontSize: number;
   borderColor: string;
@@ -44,7 +45,7 @@ export interface HistorySnapshot {
   edges: DiagramEdge[];
 }
 
-export type NodeType = "node" | "and" | "or" | "multinode" | "hexagon" | "circle" | "pill" | "complex";
+export type NodeType = "node" | "and" | "or" | "hexagon" | "circle" | "pill" | "complex";
 
 export interface NodeTypeDefinition {
   type: NodeType;
@@ -62,6 +63,7 @@ export interface ColorPalette {
   bodyColor: string;
   edgeColor: string;
   borderColor: string;
+  textColor: string;
   descriptionColor: string;
   booleanHeaderColor: string;
 }

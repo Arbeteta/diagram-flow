@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import {
   ReactFlow,
   Background,
@@ -253,14 +253,14 @@ export function DiagramEditor() {
         deleteKeyCode={null}
         snapToGrid
         snapGrid={[20, 20]}
-        className={`bg-white dark:bg-[#141414] ${!showGrid ? "handles-hidden" : ""}`}
+        className={`bg-white dark:bg-[#030712] ${!showGrid ? "handles-hidden" : ""}`}
       >
         {showGrid && (
           <Background
             variant={BackgroundVariant.Cross}
             gap={20}
             size={isDragging ? 3.5 : 2}
-            color={darkMode ? "#333333" : "#D1D5DB"}
+            color={darkMode ? "#374151" : "#D1D5DB"}
           />
         )}
         <Controls

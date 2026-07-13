@@ -89,7 +89,7 @@ export function App() {
   }, [nodes, edges]);
 
   return (
-    <div className="h-screen w-screen flex flex-col bg-white dark:bg-[#141414] text-gray-900 dark:text-gray-100 overflow-hidden">
+    <div className="h-screen w-screen flex flex-col bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 overflow-hidden">
       <ReactFlowProvider>
         <Toolbar />
         <div className="flex flex-1 overflow-hidden">
@@ -97,6 +97,12 @@ export function App() {
           <DiagramEditor />
           <PropertiesPanel />
         </div>
+        <footer className="h-7 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 flex items-center justify-center gap-6 px-4 shrink-0 z-10">
+          <a href="#" className="text-[10px] text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors font-mono tracking-wide">LinkedIn</a>
+          <a href="#" className="text-[10px] text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors font-mono tracking-wide">GitHub</a>
+          <a href="#" className="text-[10px] text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors font-mono tracking-wide">Website</a>
+          <a href="#" className="text-[10px] text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors font-mono tracking-wide">Docs</a>
+        </footer>
       </ReactFlowProvider>
     </div>
   );

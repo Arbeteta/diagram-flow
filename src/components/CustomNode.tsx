@@ -51,6 +51,7 @@ export const CustomNode = memo(function CustomNode({ id, data, selected }: Custo
   );
 
   const headerColor = nodeData.headerColor ?? nodeData.color;
+  const textColor = nodeData.textColor ?? "#ffffff";
   const description = nodeData.description?.trim();
   const hasDescription = Boolean(description);
   const category = nodeData.category?.trim();
@@ -101,8 +102,8 @@ export const CustomNode = memo(function CustomNode({ id, data, selected }: Custo
           style={{ background: headerColor }}
         >
           <span
-            className="text-white font-bold select-none pointer-events-none leading-tight truncate"
-            style={{ fontSize: nodeData.fontSize, textAlign: "left" }}
+            className="font-bold select-none pointer-events-none leading-tight truncate"
+            style={{ fontSize: nodeData.fontSize, textAlign: "left", color: textColor }}
           >
             {nodeData.label}
           </span>
@@ -119,8 +120,8 @@ export const CustomNode = memo(function CustomNode({ id, data, selected }: Custo
           >
             {nodeData.boxTitle && (
               <span
-                className="text-white font-bold select-none pointer-events-none w-full leading-tight truncate"
-                style={{ fontSize: 11 }}
+                className="font-bold select-none pointer-events-none w-full leading-tight truncate"
+                style={{ fontSize: 11, color: textColor }}
               >
                 {nodeData.boxTitle}
               </span>
@@ -184,22 +185,22 @@ export const CustomNode = memo(function CustomNode({ id, data, selected }: Custo
             onChange={(e) => setEditLabel(e.target.value)}
             onBlur={handleBlur}
             onKeyDown={handleKeyDown}
-            className="bg-transparent text-white font-bold w-full outline-none border-b border-white/50"
-            style={{ fontSize: nodeData.fontSize, textAlign }}
+            className="bg-transparent font-bold w-full outline-none border-b border-white/50"
+            style={{ fontSize: nodeData.fontSize, textAlign, color: textColor }}
           />
         ) : (
           <>
             {hasCategory && (
               <span
-                className="text-white/60 text-xs select-none pointer-events-none w-full leading-tight"
-                style={{ textAlign }}
+                className="text-xs select-none pointer-events-none w-full leading-tight font-mono"
+                style={{ textAlign, color: textColor, opacity: 0.6 }}
               >
                 {category}
               </span>
             )}
             <span
-              className="text-white font-bold select-none pointer-events-none w-full leading-none"
-              style={{ textAlign }}
+              className="font-bold select-none pointer-events-none w-full leading-none"
+              style={{ textAlign, color: textColor }}
             >
               {nodeData.label}
             </span>
