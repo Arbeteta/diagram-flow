@@ -1,5 +1,6 @@
-import { memo, useCallback, useState, useEffect, useRef } from "react";
+import { memo, useCallback, useState, useEffect, useRef, useMemo } from "react";
 import { Handle, Position, type NodeProps } from "@xyflow/react";
+import { marked } from "marked";
 import type { DiagramNode, NodeData } from "../types";
 import { useDiagramStore } from "../store/diagramStore";
 
@@ -54,6 +55,10 @@ export const CustomNode = memo(function CustomNode({ id, data, selected }: Custo
   const textColor = nodeData.textColor ?? "#ffffff";
   const description = nodeData.description?.trim();
   const hasDescription = Boolean(description);
+  const descriptionHtml = useMemo(() => {
+    if (!description) return "";
+    return marked.parse(description, { breaks: true }) as string;
+  }, [description]);
   const category = nodeData.category?.trim();
   const hasCategory = Boolean(category);
   const textAlignLeft = useDiagramStore((s) => s.textAlignLeft);
@@ -126,16 +131,15 @@ export const CustomNode = memo(function CustomNode({ id, data, selected }: Custo
                 {nodeData.boxTitle}
               </span>
             )}
-            <span
-              className="select-none pointer-events-none w-full leading-snug"
+            <div
+              className="select-none pointer-events-none w-full leading-snug [&_strong]:font-bold [&_em]:italic [&_code]:bg-white/10 [&_code]:px-1 [&_code]:rounded [&_a]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_ol]:list-decimal [&_ol]:pl-4"
               style={{
                 fontSize: 12,
                 color: nodeData.descriptionColor ?? "#d8d8d8",
                 textAlign: "left",
               }}
-            >
-              {description || "Description"}
-            </span>
+              dangerouslySetInnerHTML={{ __html: descriptionHtml || "Description" }}
+            />
           </div>
         </div>
       </div>
@@ -214,12 +218,11 @@ export const CustomNode = memo(function CustomNode({ id, data, selected }: Custo
           className="flex-1 flex items-center justify-center px-3 py-1"
           style={{ background: nodeData.color }}
         >
-          <span
-            className="text-xs select-none pointer-events-none w-full leading-tight line-clamp-2"
+          <div
+            className="text-xs select-none pointer-events-none w-full leading-tight line-clamp-2 [&_strong]:font-bold [&_em]:italic [&_code]:bg-white/10 [&_code]:px-1 [&_code]:rounded [&_a]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_ol]:list-decimal [&_ol]:pl-4"
             style={{ color: nodeData.descriptionColor ?? "#d8d8d8", textAlign }}
-          >
-            {description}
-          </span>
+            dangerouslySetInnerHTML={{ __html: descriptionHtml }}
+          />
         </div>
       )}
     </div>
