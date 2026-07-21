@@ -22,10 +22,11 @@ export interface NodeData {
 export interface EdgeData {
   label: string;
   color: string;
+  color2?: string;
   width: number;
   animated: boolean;
   style: "solid" | "dashed" | "dotted";
-  markerStyle: "arrow" | "circle";
+  markerStyle: "arrow" | "circle" | "minimal";
 }
 
 export type DiagramNode = Node<NodeData>;

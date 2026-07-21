@@ -245,10 +245,16 @@ function EdgeProperties({ data, onUpdate, onPushHistory, onDelete }: EdgePropert
           className="prop-input"
         />
       </PropRow>
-      <PropRow label="Color">
+      <PropRow label="Color 1">
         <ColorPicker
           value={localData.color}
           onChange={(v) => handleChange("color", v)}
+        />
+      </PropRow>
+      <PropRow label="Color 2">
+        <ColorPicker
+          value={localData.color2 ?? localData.color}
+          onChange={(v) => handleChange("color2", v)}
         />
       </PropRow>
       <PropRow label="Width">
@@ -284,6 +290,7 @@ function EdgeProperties({ data, onUpdate, onPushHistory, onDelete }: EdgePropert
         >
           <option value="arrow">Arrow</option>
           <option value="circle">Circle</option>
+          <option value="minimal">Minimal</option>
         </select>
       </PropRow>
       <PropRow label="Animated">
