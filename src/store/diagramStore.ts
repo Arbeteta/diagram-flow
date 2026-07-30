@@ -127,15 +127,27 @@ export const useDiagramStore = create<DiagramState>((set, get) => {
         get().setToast("Cannot connect a node to itself");
         return;
       }
+      const srcHandle = connection.sourceHandle ?? "";
+      const srcIsSource = srcHandle === "bottom" || srcHandle === "right";
+      let source = connection.source;
+      let target = connection.target;
+      let sourceHandle = connection.sourceHandle;
+      let targetHandle = connection.targetHandle;
+      if (!srcIsSource) {
+        source = connection.target;
+        target = connection.source;
+        sourceHandle = connection.targetHandle;
+        targetHandle = connection.sourceHandle;
+      }
       get().pushHistory();
       const edgeData = createDefaultEdgeData(get().activePalette);
       edgeData.color = get().globalArrowColor;
       const newEdge: DiagramEdge = {
-        id: generateEdgeId(connection.source, connection.target),
-        source: connection.source,
-        target: connection.target,
-        sourceHandle: connection.sourceHandle,
-        targetHandle: connection.targetHandle,
+        id: generateEdgeId(source, target),
+        source,
+        target,
+        sourceHandle,
+        targetHandle,
         type: "custom",
         animated: false,
         label: edgeData.label,
@@ -314,10 +326,52 @@ export const useDiagramStore = create<DiagramState>((set, get) => {
           get().setToast("Invalid diagram format: missing nodes or edges");
           return false;
         }
+        const palette = getPalette(get().activePalette);
+        const nodes: DiagramNode[] = parsed.nodes.map((n: Record<string, unknown>) => {
+          const importedData = (n.data ?? {}) as Record<string, unknown>;
+          return {
+            ...n,
+            data: {
+              color: palette.bodyColor,
+              headerColor: palette.headerColor,
+              textColor: palette.textColor,
+              descriptionColor: palette.descriptionColor,
+              borderColor: palette.borderColor,
+              fontSize: 15,
+              borderStyle: "solid",
+              borderWidth: 0,
+              width: 280,
+              height: 140,
+              borderRadius: 16,
+              ...importedData,
+              nodeType: "complex",
+              boxTitle: (importedData.boxTitle as string) || (importedData.category as string) || "Details",
+            } as NodeData,
+          };
+        });
+        const edges: DiagramEdge[] = parsed.edges.map((e: Record<string, unknown>) => {
+          const ed = (e.data ?? {}) as Record<string, unknown>;
+          const edgeColor = (ed.color as string) ?? get().globalArrowColor;
+          return {
+            ...e,
+            type: e.type ?? "custom",
+            animated: e.animated ?? false,
+            label: (e.label ?? ed.label ?? "") as string,
+            style: { stroke: edgeColor, strokeWidth: (ed.width as number) ?? 2 },
+            data: {
+              label: (e.label ?? ed.label ?? "") as string,
+              color: edgeColor,
+              width: (ed.width as number) ?? 2,
+              animated: (e.animated ?? ed.animated ?? false) as boolean,
+              style: (ed.style as string) ?? "solid",
+              markerStyle: (ed.markerStyle as string) ?? "arrow",
+            } as EdgeData,
+          } as DiagramEdge;
+        });
         get().pushHistory();
         set({
-          nodes: parsed.nodes,
-          edges: parsed.edges,
+          nodes,
+          edges,
           selectedNodeId: null,
           selectedEdgeId: null,
           past: [],
@@ -432,17 +486,6 @@ export const useDiagramStore = create<DiagramState>((set, get) => {
             } as NodeData,
           };
         }),
-        edges: state.edges.map((edge) => ({
-          ...edge,
-          data: {
-            ...edge.data,
-            color: palette.edgeColor,
-          } as EdgeData,
-          style: {
-            ...edge.style,
-            stroke: palette.edgeColor,
-          },
-        })),
       }));
     },
 

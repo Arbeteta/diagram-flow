@@ -80,7 +80,8 @@ export const CustomNode = memo(function CustomNode({ id, data, selected }: Custo
     clipPath: isHexagon
       ? "polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)"
       : undefined,
-    width: nodeData.width,
+    minWidth: nodeData.width,
+    maxWidth: 300,
     minHeight: isCircle ? nodeData.width : nodeData.height,
     height: isCircle ? nodeData.width : undefined,
     fontSize: nodeData.fontSize,
@@ -219,7 +220,7 @@ export const CustomNode = memo(function CustomNode({ id, data, selected }: Custo
           style={{ background: nodeData.color }}
         >
           <div
-            className="text-xs select-none pointer-events-none w-full leading-tight line-clamp-2 [&_strong]:font-bold [&_em]:italic [&_code]:bg-white/10 [&_code]:px-1 [&_code]:rounded [&_a]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_ol]:list-decimal [&_ol]:pl-4"
+            className="text-xs select-none pointer-events-none w-full leading-tight [&_strong]:font-bold [&_em]:italic [&_code]:bg-white/10 [&_code]:px-1 [&_code]:rounded [&_a]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_ol]:list-decimal [&_ol]:pl-4"
             style={{ color: nodeData.descriptionColor ?? "#d8d8d8", textAlign }}
             dangerouslySetInnerHTML={{ __html: descriptionHtml }}
           />

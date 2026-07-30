@@ -151,7 +151,7 @@ export function createDefaultNodeData(type: string, paletteId?: string): NodeDat
     borderStyle: "solid",
     borderWidth: 0,
     width: isSmall ? 100 : isPill ? 180 : isComplex ? 280 : isCircle ? 120 : isHexagon ? 120 : 180,
-    height: isSmall ? 50 : isPill ? 44 : isComplex ? 140 : isCircle ? 120 : isHexagon ? 104 : 80,
+    height: isSmall ? 60 : isPill ? 60 : isComplex ? 140 : isCircle ? 120 : isHexagon ? 100 : 80,
     borderRadius: isPill ? 9999 : isCircle ? 9999 : isComplex ? 16 : isHexagon ? 10 : 8,
   };
 }

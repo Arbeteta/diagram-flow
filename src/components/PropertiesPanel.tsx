@@ -280,6 +280,18 @@ function EdgeProperties({ data, onUpdate, onPushHistory, onDelete }: EdgePropert
           <option value="dotted">Dotted</option>
         </select>
       </PropRow>
+      <PropRow label="Text Color">
+        <select
+          value={localData.labelColor ?? "white"}
+          onChange={(e) =>
+            handleChange("labelColor", e.target.value as "white" | "black")
+          }
+          className="prop-input"
+        >
+          <option value="white">White</option>
+          <option value="black">Black</option>
+        </select>
+      </PropRow>
       <PropRow label="Tip">
         <select
           value={localData.markerStyle ?? "arrow"}
@@ -291,6 +303,7 @@ function EdgeProperties({ data, onUpdate, onPushHistory, onDelete }: EdgePropert
           <option value="arrow">Arrow</option>
           <option value="circle">Circle</option>
           <option value="minimal">Minimal</option>
+          <option value="micro">Micro</option>
         </select>
       </PropRow>
       <PropRow label="Animated">

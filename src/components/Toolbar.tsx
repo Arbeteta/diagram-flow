@@ -127,22 +127,51 @@ export function Toolbar() {
     }
   }, [selectedNodeId, selectedEdgeId, deleteSelected]);
 
-  const handleExportPng = useCallback(() => {
+  const handleExportPng = useCallback(async () => {
+    const nodes = useDiagramStore.getState().nodes;
+    if (nodes.length === 0) return;
+    const PAD = 40;
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    for (const n of nodes) {
+      const w = (n.data as Record<string, number>)?.width ?? 180;
+      const h = (n.data as Record<string, number>)?.height ?? 80;
+      minX = Math.min(minX, n.position.x);
+      minY = Math.min(minY, n.position.y);
+      maxX = Math.max(maxX, n.position.x + w);
+      maxY = Math.max(maxY, n.position.y + h);
+    }
+    const width = maxX - minX + PAD * 2;
+    const height = maxY - minY + PAD * 2;
+    const renderer = document.querySelector(".react-flow__renderer") as HTMLElement;
     const viewport = document.querySelector(".react-flow__viewport") as HTMLElement;
-    if (!viewport) return;
-    toPng(viewport, {
-      backgroundColor: darkMode ? "#030712" : "#ffffff",
-      pixelRatio: 2,
-    }).then((dataUrl) => {
+    if (!renderer || !viewport) return;
+    const prevW = renderer.style.width;
+    const prevH = renderer.style.height;
+    const prevTransform = viewport.style.transform;
+    renderer.style.width = `${width}px`;
+    renderer.style.height = `${height}px`;
+    viewport.style.transform = `translate(${-minX + PAD}px, ${-minY + PAD}px) scale(1)`;
+    await new Promise((r) => setTimeout(r, 150));
+    try {
+      const dataUrl = await toPng(renderer, {
+        backgroundColor: darkMode ? "#030712" : "#ffffff",
+        pixelRatio: 2,
+      });
+      renderer.style.width = prevW;
+      renderer.style.height = prevH;
+      viewport.style.transform = prevTransform;
       const stamp = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
       const link = document.createElement("a");
       link.download = `diagram-${stamp}.png`;
       link.href = dataUrl;
       link.click();
       setToast("PNG exported");
-    }).catch(() => {
+    } catch {
+      renderer.style.width = prevW;
+      renderer.style.height = prevH;
+      viewport.style.transform = prevTransform;
       setToast("PNG export failed");
-    });
+    }
   }, [darkMode, setToast]);
 
   return (

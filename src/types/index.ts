@@ -26,7 +26,8 @@ export interface EdgeData {
   width: number;
   animated: boolean;
   style: "solid" | "dashed" | "dotted";
-  markerStyle: "arrow" | "circle" | "minimal";
+  markerStyle: "arrow" | "circle" | "minimal" | "micro";
+  labelColor?: "white" | "black";
 }
 
 export type DiagramNode = Node<NodeData>;

@@ -85,9 +85,9 @@ export const CustomEdge = memo(function CustomEdge({
             <span
               className="px-2 py-0.5 text-xs font-medium rounded shadow-sm"
               style={{
-                background: "white",
-                color: color1,
-                border: `1px solid ${color1}`,
+                background: edgeData?.labelColor === "black" ? "#fff" : "#1f1f1f",
+                color: edgeData?.labelColor === "black" ? "#000" : "#fff",
+                border: `1px solid ${edgeData?.labelColor === "black" ? "#d1d5db" : "#4b5563"}`,
               }}
             >
               {edgeData.label}
@@ -97,17 +97,17 @@ export const CustomEdge = memo(function CustomEdge({
       )}
       <defs>
         {hasGradient && (
-          <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
+          <linearGradient id={gradientId} gradientUnits="userSpaceOnUse" x1={sourceX} y1={sourceY} x2={targetX} y2={targetY}>
             <stop offset="0%" stopColor={color1} />
             <stop offset="100%" stopColor={color2} />
           </linearGradient>
         )}
         <marker
           id={`arrow-${id}`}
-          markerWidth={edgeData?.markerStyle === "circle" ? "7" : edgeData?.markerStyle === "minimal" ? "8" : "6"}
-          markerHeight={edgeData?.markerStyle === "circle" ? "7" : edgeData?.markerStyle === "minimal" ? "8" : "4"}
-          refX={edgeData?.markerStyle === "circle" ? "3.5" : edgeData?.markerStyle === "minimal" ? "6" : "4"}
-          refY={edgeData?.markerStyle === "circle" ? "3.5" : edgeData?.markerStyle === "minimal" ? "4" : "2"}
+          markerWidth={edgeData?.markerStyle === "circle" ? "7" : (edgeData?.markerStyle === "minimal" || edgeData?.markerStyle === "micro") ? "8" : "6"}
+          markerHeight={edgeData?.markerStyle === "circle" ? "7" : (edgeData?.markerStyle === "minimal" || edgeData?.markerStyle === "micro") ? "8" : "4"}
+          refX={edgeData?.markerStyle === "circle" ? "3.5" : (edgeData?.markerStyle === "minimal" || edgeData?.markerStyle === "micro") ? "6" : "4"}
+          refY={edgeData?.markerStyle === "circle" ? "3.5" : (edgeData?.markerStyle === "minimal" || edgeData?.markerStyle === "micro") ? "4" : "2"}
           orient="auto"
         >
           {edgeData?.markerStyle === "circle" ? (
@@ -116,6 +116,11 @@ export const CustomEdge = memo(function CustomEdge({
             <g stroke={color2 ?? color1} strokeWidth="0.8" strokeLinecap="round" fill="none">
               <line x1="0" y1="0" x2="6" y2="4" />
               <line x1="0" y1="8" x2="6" y2="4" />
+            </g>
+          ) : edgeData?.markerStyle === "micro" ? (
+            <g stroke={color2 ?? color1} strokeWidth="0.8" strokeLinecap="round" fill="none">
+              <line x1="2" y1="1" x2="6" y2="4" />
+              <line x1="2" y1="7" x2="6" y2="4" />
             </g>
           ) : (
             <polygon
