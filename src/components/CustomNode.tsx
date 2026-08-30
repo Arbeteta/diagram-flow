@@ -97,10 +97,14 @@ export const CustomNode = memo(function CustomNode({ id, data, selected }: Custo
         style={containerStyle}
         onDoubleClick={handleDoubleClick}
       >
-        <Handle type="target" position={Position.Top} id="top" className="!w-3 !h-3 !border-2 !border-white !bg-gray-400 !shadow-sm" />
+        <Handle type="target" position={Position.Top} id="top-in" className="!w-3 !h-3 opacity-0" />
+        <Handle type="target" position={Position.Right} id="right-in" className="!w-3 !h-3 opacity-0" />
+        <Handle type="target" position={Position.Bottom} id="bottom-in" className="!w-3 !h-3 opacity-0" />
+        <Handle type="target" position={Position.Left} id="left-in" className="!w-3 !h-3 opacity-0" />
+        <Handle type="source" position={Position.Top} id="top" className="!w-3 !h-3 !border-2 !border-white !bg-gray-400 !shadow-sm" />
         <Handle type="source" position={Position.Right} id="right" className="!w-3 !h-3 !border-2 !border-white !bg-gray-400 !shadow-sm" />
         <Handle type="source" position={Position.Bottom} id="bottom" className="!w-3 !h-3 !border-2 !border-white !bg-gray-400 !shadow-sm" />
-        <Handle type="target" position={Position.Left} id="left" className="!w-3 !h-3 !border-2 !border-white !bg-gray-400 !shadow-sm" />
+        <Handle type="source" position={Position.Left} id="left" className="!w-3 !h-3 !border-2 !border-white !bg-gray-400 !shadow-sm" />
 
         {/* Header / title */}
         <div
@@ -153,8 +157,12 @@ export const CustomNode = memo(function CustomNode({ id, data, selected }: Custo
       style={containerStyle}
       onDoubleClick={handleDoubleClick}
     >
+      <Handle type="target" position={Position.Top} id="top-in" className="!w-3 !h-3 opacity-0" />
+      <Handle type="target" position={Position.Right} id="right-in" className="!w-3 !h-3 opacity-0" />
+      <Handle type="target" position={Position.Bottom} id="bottom-in" className="!w-3 !h-3 opacity-0" />
+      <Handle type="target" position={Position.Left} id="left-in" className="!w-3 !h-3 opacity-0" />
       <Handle
-        type="target"
+        type="source"
         position={Position.Top}
         id="top"
         className="!w-3 !h-3 !border-2 !border-white !bg-gray-400 !shadow-sm"
@@ -172,7 +180,7 @@ export const CustomNode = memo(function CustomNode({ id, data, selected }: Custo
         className="!w-3 !h-3 !border-2 !border-white !bg-gray-400 !shadow-sm"
       />
       <Handle
-        type="target"
+        type="source"
         position={Position.Left}
         id="left"
         className="!w-3 !h-3 !border-2 !border-white !bg-gray-400 !shadow-sm"

@@ -6,6 +6,7 @@ import {
   MiniMap,
   BackgroundVariant,
   SelectionMode,
+  ConnectionMode,
   useReactFlow,
   type DragEvent,
 } from "@xyflow/react";
@@ -147,7 +148,12 @@ export function DiagramEditor() {
       const ctrl = event.ctrlKey || event.metaKey;
 
       if (event.key === "Delete" || event.key === "Backspace") {
-        if (selectedNodeId || selectedEdgeId) {
+        const hasSelection =
+          selectedNodeId ||
+          selectedEdgeId ||
+          useDiagramStore.getState().nodes.some((n) => n.selected) ||
+          useDiagramStore.getState().edges.some((e) => e.selected);
+        if (hasSelection) {
           event.preventDefault();
           deleteSelected();
         }
@@ -232,6 +238,8 @@ export function DiagramEditor() {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        connectionMode={ConnectionMode.Loose}
+        isValidConnection={(connection) => connection.source !== connection.target}
         onNodeClick={onNodeClick}
         onEdgeClick={onEdgeClick}
         onPaneClick={onPaneClick}

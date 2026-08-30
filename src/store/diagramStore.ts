@@ -127,27 +127,15 @@ export const useDiagramStore = create<DiagramState>((set, get) => {
         get().setToast("Cannot connect a node to itself");
         return;
       }
-      const srcHandle = connection.sourceHandle ?? "";
-      const srcIsSource = srcHandle === "bottom" || srcHandle === "right";
-      let source = connection.source;
-      let target = connection.target;
-      let sourceHandle = connection.sourceHandle;
-      let targetHandle = connection.targetHandle;
-      if (!srcIsSource) {
-        source = connection.target;
-        target = connection.source;
-        sourceHandle = connection.targetHandle;
-        targetHandle = connection.sourceHandle;
-      }
       get().pushHistory();
       const edgeData = createDefaultEdgeData(get().activePalette);
       edgeData.color = get().globalArrowColor;
       const newEdge: DiagramEdge = {
-        id: generateEdgeId(source, target),
-        source,
-        target,
-        sourceHandle,
-        targetHandle,
+        id: generateEdgeId(connection.source, connection.target),
+        source: connection.source,
+        target: connection.target,
+        sourceHandle: connection.sourceHandle,
+        targetHandle: connection.targetHandle,
         type: "custom",
         animated: false,
         label: edgeData.label,
@@ -215,29 +203,29 @@ export const useDiagramStore = create<DiagramState>((set, get) => {
 
     deleteSelected: () => {
       const { selectedNodeId, selectedEdgeId, nodes, edges } = get();
-      if (!selectedNodeId && !selectedEdgeId) return;
-      get().pushHistory();
-      if (selectedNodeId) {
-        const nodeToDelete = nodes.find((n) => n.id === selectedNodeId);
-        if (nodeToDelete) {
-          const connectedEdges = edges.filter(
-            (e) => e.source === selectedNodeId || e.target === selectedNodeId
-          );
-          set((state) => ({
-            nodes: state.nodes.filter((n) => n.id !== selectedNodeId),
-            edges: state.edges.filter(
-              (e) => e.id !== selectedEdgeId && !connectedEdges.some((ce) => ce.id === e.id)
-            ),
-            selectedNodeId: null,
-            selectedEdgeId: null,
-          }));
+      const selectedNodeIds = new Set<string>();
+      if (selectedNodeId) selectedNodeIds.add(selectedNodeId);
+      nodes.forEach((n) => {
+        if (n.selected) selectedNodeIds.add(n.id);
+      });
+      const selectedEdgeIds = new Set<string>();
+      if (selectedEdgeId) selectedEdgeIds.add(selectedEdgeId);
+      edges.forEach((e) => {
+        if (e.selected) selectedEdgeIds.add(e.id);
+      });
+      edges.forEach((e) => {
+        if (selectedNodeIds.has(e.source) || selectedNodeIds.has(e.target)) {
+          selectedEdgeIds.add(e.id);
         }
-      } else if (selectedEdgeId) {
-        set((state) => ({
-          edges: state.edges.filter((e) => e.id !== selectedEdgeId),
-          selectedEdgeId: null,
-        }));
-      }
+      });
+      if (selectedNodeIds.size === 0 && selectedEdgeIds.size === 0) return;
+      get().pushHistory();
+      set((state) => ({
+        nodes: state.nodes.filter((n) => !selectedNodeIds.has(n.id)),
+        edges: state.edges.filter((e) => !selectedEdgeIds.has(e.id)),
+        selectedNodeId: null,
+        selectedEdgeId: null,
+      }));
     },
 
     deleteNode: (nodeId) => {
