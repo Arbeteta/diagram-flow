@@ -1,6 +1,8 @@
 # Diagram Editor
 
-A browser-based interactive diagram editor for creating node graphs with an infinite canvas, smooth pan & zoom, and a rich set of customization options. Built with **React**, **React Flow (xyflow)**, **TypeScript**, and **Tailwind CSS**. Parecido al de MITRE pero mejor.
+Este es un editor de diagramas interactivo que corre en el navegador. Con él se pueden crear grafos de nodos, con lienzo infinito, desplazamiento y zoom fluidos, y una amplia gama de opciones de personalización (no está mal). Desarrollado con **React**, **React Flow (xyflow)**, **TypeScript** y **Tailwind CSS**. Parecido al de MITRE pero mejor.
+
+A browser-based interactive diagram editor for creating node graphs with an infinite canvas, smooth pan & zoom, and a rich set of customization options. Built with **React**, **React Flow (xyflow)**, **TypeScript**, and **Tailwind CSS**. Similar to the MITRE DEFEND one but better :D.
 
 <p align="center">
   <img src="public/orion-logo-white.svg" alt="Orion" width="200" />
@@ -281,4 +283,4 @@ diagram-editor/
 
 ## License
 
-MIT
+ES/EN Este proyecto se distribuye bajo la licencia MIT. This project is distributed under the MIT license.
